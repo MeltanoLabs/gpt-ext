@@ -1,0 +1,12 @@
+# Changes here will be overwritten by Copier
+_commit: v0.3.0
+_src_path: gh:meltano/edk
+admin_name: AJ Steers, Meltano
+cli_prefix: openai
+extension_description: A meltano utility extension for OpenAI that wraps OpenAI tools
+    such as ChatGPT.
+extension_id: openai-ext
+extension_name: OpenAI
+extension_name_lower: openai
+library_name: openai_ext
+wrapper_target_name: OpenAI

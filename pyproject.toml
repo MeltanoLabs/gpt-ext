@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "openai-ext"
+name = "gpt-ext"
 version = "0.0.1"
-description = "`openai-ext` is a Meltano utility extension."
+description = "`gpt-ext` is a Meltano utility extension to execute GPT and LangChain commands."
 authors = ["AJ Steers, Meltano"]
 license = "Apache 2.0"
 packages = [
-    { include = "openai_ext" }
+    { include = "gpt_ext" }
     # uncomment this if you want to include static assets
     # { include = "files_openai-ext.*" }
 ]
@@ -36,4 +36,4 @@ requires = ["poetry-core>=1.0.8"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-openai_ext = 'openai_ext.extension:OpenAI.cli()'
+gpt_ext = 'gpt_ext.extension:GPTExt.cli()'

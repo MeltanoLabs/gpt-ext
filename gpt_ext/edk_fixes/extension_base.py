@@ -15,7 +15,7 @@ from meltano.edk.logging import (
     pass_through_logging_config,
 )
 
-from openai_ext.edk_fixes.cli import CLI
+from gpt_ext.edk_fixes.cli import CLI
 
 
 class ExtensionBase(_ExtensionBase):

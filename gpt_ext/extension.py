@@ -1,24 +1,20 @@
 """Meltano OpenAI extension."""
 from __future__ import annotations
 
+import os
 from typing import Any
 
-import structlog
 import typer
 
-log = structlog.get_logger()
-import asyncio
-import os
-
-from openai_ext.ai import get_chain, load_chroma_vectorstore
-from openai_ext.edk_fixes.extension_base import CLI, ExtensionBase
+from gpt_ext.ai import get_chain, load_chroma_vectorstore
+from gpt_ext.edk_fixes.extension_base import CLI, ExtensionBase
 
 DEFAULT_SETTING_VALS = {
     "chroma_dir": os.path.join(os.path.expanduser("~"), ".chroma"),
 }
 
 
-class OpenAI(ExtensionBase):
+class GPTExt(ExtensionBase):
     """Extension implementing the ExtensionBase interface."""
 
     supports_invoke_command = False

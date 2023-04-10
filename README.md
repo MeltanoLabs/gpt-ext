@@ -1,6 +1,6 @@
-# OpenAI
+# `gpt-ext`
 
-OpenAI is A meltano utility extension for OpenAI that wraps OpenAI tools such as ChatGPT.
+`gpt-ext` is A meltano utility extension for GPT that wraps OpenAI tools such as ChatGPT.
 
 ## Installing this extension for local development
 
@@ -14,9 +14,8 @@ poetry install
 2. Verify that you can invoke the extension:
 
 ```shell
-poetry run openai_extension --help
-poetry run openai_extension describe --format=yaml
-poetry run openai_invoker --help # if you have are wrapping another tool
+poetry run gpt_ext --help
+poetry run gpt_ext chat
 ```
 
 ## Template updates

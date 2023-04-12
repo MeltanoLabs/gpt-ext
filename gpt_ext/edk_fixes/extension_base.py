@@ -139,12 +139,8 @@ class ExtensionBase(_ExtensionBase):
             sys.exit(1)
 
     @classmethod
-    def cli(cls) -> typer.Typer:
-        """Get the typer app for this extension.
-
-        Returns:
-            The typer app.
-        """
+    def cli(cls) -> None:
+        """Get the typer app for this extension."""
 
         def main(
             ctx: typer.Context,
@@ -184,8 +180,7 @@ class ExtensionBase(_ExtensionBase):
             context_settings={"obj": extension},
             unsupported_commands=unsupported_commands,
         )
-
-        return cli
+        cli()
 
     @CLI.command(allow_extra_args=True)
     @staticmethod

@@ -1,4 +1,4 @@
-"""Meltano OpenAI extension."""
+"""Meltano GPT extension."""
 from __future__ import annotations
 
 import os
@@ -6,7 +6,7 @@ from typing import Any
 
 import typer
 
-from gpt_ext.ai import get_chain, load_chroma_vectorstore
+from gpt_ext.ai import get_chain, load_chroma_vectorstore, load_pinecone_vectorstore
 from gpt_ext.edk_fixes.extension_base import CLI, ExtensionBase
 
 DEFAULT_SETTING_VALS = {
@@ -29,13 +29,26 @@ class GPTExt(ExtensionBase):
     @property
     def vectorstore(self) -> Any:
         if not self._vectorstore:
-            _vectorstore = load_chroma_vectorstore(self.get_config("chroma_dir"))
-
+            if self.get_config("vectorstore") == "chroma":
+                self.logger.info("Loading Chroma vectorstore.")
+                _vectorstore = load_chroma_vectorstore(self.get_config("chroma_dir"))
+            elif self.get_config("vectorstore") == "pinecone":
+                self.logger.info("Loading Pinecone vectorstore.")
+                _vectorstore = load_pinecone_vectorstore(
+                    self.get_config("pinecone_api_key"),
+                    self.get_config("pinecone_environment"),
+                    self.get_config("pinecone_index"),
+                    self.get_config("openai_api_key"),
+                    self.get_config("pinecone_metadata_text_key"),
+                )
         return _vectorstore
 
     def get_config(self, setting_name: str) -> Any:
         """Get a config setting."""
-        env_var = "OPENAI_" + setting_name.upper()
+        env_var = setting_name.upper()
+        if env_var in os.environ:
+            return os.environ[env_var]
+        env_var = "GPT_EXT_" + setting_name.upper()
         if env_var in os.environ:
             return os.environ[env_var]
 
@@ -53,7 +66,7 @@ class GPTExt(ExtensionBase):
         then unknown options are also included in the list and NOT stored in the
         context as usual.
         """
-        app: OpenAI = ctx.obj
+        app: GPTExt = ctx.obj
 
         async def question_handler(text):
             print("Question:", text)
@@ -63,7 +76,6 @@ class GPTExt(ExtensionBase):
         async def stream_handler(text):
             print("Stream:", text)
 
-        print("Hello World!")
         qa = get_chain(
             app.vectorstore,
             question_handler=question_handler,

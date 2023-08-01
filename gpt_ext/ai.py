@@ -9,9 +9,9 @@ from langchain.chains.question_answering import load_qa_chain
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.llms import OpenAI
 from langchain.memory import ConversationBufferMemory
-from langchain.vectorstores import Chroma
+from langchain.vectorstores import Chroma, Pinecone
 from langchain.vectorstores.base import VectorStore
-
+import pinecone
 
 def load_chroma_vectorstore(chroma_dir) -> Chroma:
     """Load the Chroma vectorstore."""
@@ -25,6 +25,19 @@ def load_chroma_vectorstore(chroma_dir) -> Chroma:
     )
     return chroma
 
+def load_pinecone_vectorstore(
+        pinecone_api_key: str,
+        pinecone_environment: str,
+        pinecone_index_name: str,
+        openai_api_key: str,
+        pinecone_metadata_text_key: str = "text",
+) -> Pinecone:
+    """Load the Pinecone vectorstore."""
+    pinecone.init(api_key=pinecone_api_key, environment=pinecone_environment)
+    index = pinecone.Index(pinecone_index_name)
+    embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key, model="text-embedding-ada-002")
+    vectordb = Pinecone(index, embeddings.embed_query, pinecone_metadata_text_key)
+    return vectordb
 
 def get_chain(
     vectorstore: VectorStore, question_handler, stream_handler, tracing: bool = False
